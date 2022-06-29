@@ -155,6 +155,14 @@
       		"Oracle",
       		"RedHat"
       	]
+      },
+      "opatchURL":{
+      	"type": "string",
+      	"defaultValue":"none",
+      },
+      "wlspatchURL":{
+      	"type": "string",
+      	"defaultValue":"none",
       }
    },
    "variables":{
@@ -359,7 +367,7 @@
                "fileUris":[
                   "[uri(parameters('_artifactsLocationTemplate'), concat(variables('name_scriptFile'), parameters('_artifactsLocationSasToken')))]"
                ],
-               "commandToExecute":"[concat('sh genericinstall.sh',' ',parameters('acceptOTNLicenseAgreement'),' ',parameters('otnAccountUsername'),' ',parameters('otnAccountPassword'),' ',parameters('shiphomeurl'),' ',parameters('jdkurl'),' ',parameters('wlsversion'),' ',parameters('jdkversion'))]"
+               "commandToExecute":"[concat('sh genericinstall.sh',' ',parameters('acceptOTNLicenseAgreement'),' ',parameters('otnAccountUsername'),' ',parameters('otnAccountPassword'),' ',parameters('shiphomeurl'),' ',parameters('jdkurl'),' ',parameters('wlsversion'),' ',parameters('jdkversion'),' ',parameters('opatchURL'),' ',parameters('wlspatchURL'))]"
             }
          }
       }
