@@ -662,11 +662,6 @@ else
     exit 1
 fi
 
-if [[ $osName == *"oracle"* ]]; then
-
-else
-
-fi
 echo "Installing zip unzip wget vnc-server rng-tools cifs-utils"
 sudo yum install -y zip unzip wget vnc-server rng-tools cifs-utils cloud-utils-growpart gdisk psmisc util-linux
 
@@ -708,11 +703,11 @@ testJDBCDrivers
 
 
 #Update Opatch
-opatchUpdate()
-wlspatchUpdate()
+opatchUpdate
+wlspatchUpdate
 
 if [[ $osName == *"oracle"* ]]; then
-	updateOLOS()
+	updateOLOS
 else
 	updateRHELOS
 	#Disable swap created as it will be enabled by WALinux agent after reboot
