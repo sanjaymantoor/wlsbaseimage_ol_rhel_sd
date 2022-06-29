@@ -1,0 +1,388 @@
+{
+   "$schema":"https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+   "contentVersion":"1.0.0.0",
+   "parameters":{
+      "baseTime": {
+         "type": "string",
+         "defaultValue": "[utcNow('u')]"
+      },
+      "_artifactsLocation": {
+          "type": "string",
+          "metadata": {
+              "description": "The base URI where artifacts required by this template are located. When the template is deployed using the accompanying scripts, a private location in the subscription will be used and this value will be automatically generated."
+          }
+      },
+      "_artifactsLocationTemplate": {
+          "defaultValue": "[if(contains(parameters('_artifactsLocation'), 'githubusercontent'), parameters('_artifactsLocation'), deployment().properties.templateLink.uri)]",
+          "type": "string",
+          "metadata": {
+              "description": "If we are deploying from the command line, use the passed in _artifactsLocation, otherwise use the default."
+          }
+      },
+      "_artifactsLocationSasToken": {
+          "defaultValue": "",
+          "type": "securestring",
+          "metadata": {
+              "description": "The sasToken required to access _artifactsLocation.  When the template is deployed using the accompanying scripts, a sasToken will be automatically generated. Use the defaultValue if the staging location is not secured."
+          }
+      },         
+      "adminUsername":{
+         "type":"string",
+         "metadata":{
+            "description":"User name for the Virtual Machine."
+         }
+      },
+      "vmName":{
+         "type":"string",
+         "metadata":{
+            "description":"Virtual Machine Name."
+         }
+      },
+      "shiphomeurl":{
+         "type":"string",
+         "metadata":{
+            "description":"Link to WLS shiphome location on OTN"
+         }
+      },
+      "jdkurl":{
+         "type":"string",
+         "metadata":{
+            "description":"Link to jdk location on OTN"
+         }
+      },
+      "wlsversion":{
+         "type":"string",
+         "metadata":{
+            "description":"WebLogic Server Version number"
+         }
+      },
+      "jdkversion":{
+         "type":"string",
+         "metadata":{
+            "description":"JDK Version"
+         }
+      },
+      "authenticationType":{
+         "type":"string",
+         "defaultValue":"password",
+         "allowedValues":[
+            "sshPublicKey",
+            "password"
+         ],
+         "metadata":{
+            "description":"Type of authentication to use on the Virtual Machine. SSH key is recommended."
+         }
+      },
+      "adminPasswordOrKey":{
+         "type":"securestring",
+         "metadata":{
+            "description":"SSH Key or password for the Virtual Machine. SSH key is recommended."
+         }
+      },
+      "acceptOTNLicenseAgreement":{
+         "type":"string",
+         "metadata":{
+            "description":"Do you agree to provide OTN credentials to accept OTN License Agreement? Enter Y or y to agree, else N or n"
+         }
+      },
+      "otnAccountUsername":{
+         "type":"string",
+         "metadata":{
+            "description":"Username for your Oracle Technology Network account"
+         }
+      },
+      "otnAccountPassword":{
+         "type":"securestring",
+         "metadata":{
+            "description":"Password for your Oracle Technology Network account"
+         }
+      },
+      "dnsLabelPrefix":{
+         "type":"string",
+         "metadata":{
+            "description":"Unique DNS Name for the Public IP used to access the Virtual Machine."
+         }
+      },
+      "linuxOSVersion":{
+         "type":"string",
+         "defaultValue":"7.6",
+         "allowedValues":[
+            "7.6",
+            "7.5",
+            "7.4",
+            "7.3"
+         ],
+         "metadata":{
+            "description":"The Oracle Linux version for the VM. This will pick a fully patched image of this given Oracle Linux version."
+         }
+      },
+      "location":{
+         "type":"string",
+         "defaultValue":"[resourceGroup().location]",
+         "metadata":{
+            "description":"Location for all resources."
+         }
+      },
+      "accountSasProperties": {
+            "type": "object",
+            "defaultValue": {
+                "signedServices": "b",
+                "signedPermission": "rl",
+                "signedStart" : "[dateTimeAdd(parameters('baseTime'), '-P2D')]",
+                "signedExpiry": "[dateTimeAdd(parameters('baseTime'), 'P120D')]",
+                "signedResourceTypes": "o"
+            }
+      },
+      "vmSizeSelect":{
+         "type":"string",
+         "defaultValue":"Standard_B2ms",
+         "allowedValues":[
+            "Standard_A1",
+            "Standard_A2",
+            "Standard_A3",
+            "Standard_A4",
+            "Standard_A2_v2",
+            "Standard_B2ms"
+         ],
+         "metadata":{
+            "description":"Select appropriate VM Size as per requirement (Standard_A1, Standard_A2, Standard_A3, Standard_A4, Standard_A2_v2)"
+         }
+      },
+      "linuxType":{
+      	"type": "string",
+      	"defaultValue":"Oracle",
+      	"allowedValues":[
+      		"Oracle",
+      		"RedHat"
+      	]
+      }
+   },
+   "variables":{
+      "storageAccountName":"[substring(concat(replace(resourceGroup().name,'-',''),uniquestring(resourceGroup().id),'xxxxxxxxxx'),0,23)]",
+      "storageContainerUri":"[concat(concat('https://', variables('storageAccountName'), '.blob.core.windows.net/'), 'vhds/')]",
+      "imagePublisher":"[parameters('linuxType')]",
+      "imageOffer":"[if(equals(parameters('linuxType'), 'Oracle'), 'Oracle-Linux', 'RHEL')]",
+      "nicName":"vmNIC",
+      "addressPrefix":"10.0.0.0/16",
+      "subnetName":"Subnet",
+      "networkSecurityGroupName":"[concat(variables('subnetName'), '-nsg')]",
+      "subnetPrefix":"10.0.0.0/24",
+      "storageAccountType":"Standard_LRS",
+      "publicIPAddressName":"vmPublicIP",
+      "publicIPAddressType":"Dynamic",
+      "vmName":"BaseImageVM",
+      "vmSize":"[parameters('vmSizeSelect')]",
+      "virtualNetworkName":"vmVNET",
+      "name_scriptFile": "genericinstall.sh",
+      "linuxConfiguration":{
+         "disablePasswordAuthentication":true,
+         "ssh":{
+            "publicKeys":[
+               {
+                  "path":"[concat('/home/', parameters('adminUsername'), '/.ssh/authorized_keys')]",
+                  "keyData":"[parameters('adminPasswordOrKey')]"
+               }
+            ]
+         }
+      },
+      "subnetRef":"[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), variables('subnetName'))]"
+   },
+   "resources":[
+      {
+         "type":"Microsoft.Storage/storageAccounts",
+         "apiVersion":"2018-11-01",
+         "name":"[variables('storageAccountName')]",
+         "location":"[parameters('location')]",
+         "sku":{
+            "name":"[variables('storageAccountType')]"
+         },
+         "kind":"Storage",
+         "properties":{
+
+         }
+      },
+      {
+         "type":"Microsoft.Network/publicIPAddresses",
+         "apiVersion":"2018-11-01",
+         "name":"[variables('publicIPAddressName')]",
+         "location":"[parameters('location')]",
+         "properties":{
+            "publicIPAllocationMethod":"[variables('publicIPAddressType')]",
+            "dnsSettings":{
+               "domainNameLabel":"[parameters('dnsLabelPrefix')]"
+            }
+         }
+      },
+      {
+         "comments":"Simple Network Security Group for subnet [variables('subnetName')]",
+         "type":"Microsoft.Network/networkSecurityGroups",
+         "apiVersion":"2019-08-01",
+         "name":"[variables('networkSecurityGroupName')]",
+         "location":"[parameters('location')]",
+         "properties":{
+            "securityRules":[
+               {
+                  "name":"default-allow-22",
+                  "properties":{
+                     "priority":1000,
+                     "access":"Allow",
+                     "direction":"Inbound",
+                     "destinationPortRange":"22",
+                     "protocol":"Tcp",
+                     "sourceAddressPrefix":"*",
+                     "sourcePortRange":"*",
+                     "destinationAddressPrefix":"*"
+                  }
+               }
+            ]
+         }
+      },
+      {
+         "type":"Microsoft.Network/virtualNetworks",
+         "apiVersion":"2018-11-01",
+         "name":"[variables('virtualNetworkName')]",
+         "location":"[parameters('location')]",
+         "dependsOn": [
+           "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName'))]"
+         ],
+         "properties":{
+            "addressSpace":{
+               "addressPrefixes":[
+                  "[variables('addressPrefix')]"
+               ]
+            },
+            "subnets":[
+               {
+                  "name":"[variables('subnetName')]",
+                  "properties":{
+                     "addressPrefix":"[variables('subnetPrefix')]",
+                     "networkSecurityGroup":{
+                        "id":"[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName'))]"
+                     }
+                  }
+               }
+            ]
+         }
+      },
+      {
+         "type":"Microsoft.Network/networkInterfaces",
+         "apiVersion":"2018-11-01",
+         "name":"[variables('nicName')]",
+         "location":"[parameters('location')]",
+         "dependsOn":[
+            "[resourceId('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName'))]",
+            "[resourceId('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
+         ],
+         "properties":{
+            "ipConfigurations":[
+               {
+                  "name":"ipconfig1",
+                  "properties":{
+                     "privateIPAllocationMethod":"Dynamic",
+                     "publicIPAddress":{
+                        "id":"[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName'))]"
+                     },
+                     "subnet":{
+                        "id":"[variables('subnetRef')]"
+                     }
+                  }
+               }
+            ]
+         }
+      },
+      {
+         "type":"Microsoft.Compute/virtualMachines",
+         "apiVersion":"2018-10-01",
+         "name":"[variables('vmName')]",
+         "location":"[parameters('location')]",
+         "dependsOn":[
+            "[resourceId('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
+            "[resourceId('Microsoft.Network/networkInterfaces/', variables('nicName'))]"
+         ],
+         "properties":{
+            "hardwareProfile":{
+               "vmSize":"[variables('vmSize')]"
+            },
+            "osProfile":{
+               "computerName":"[variables('vmName')]",
+               "adminUsername":"[parameters('adminUsername')]",
+               "adminPassword":"[parameters('adminPasswordOrKey')]",
+               "linuxConfiguration":"[if(equals(parameters('authenticationType'), 'password'), json('null'), variables('linuxConfiguration'))]"
+            },
+            "storageProfile":{
+               "imageReference":{
+                  "publisher":"[variables('imagePublisher')]",
+                  "offer":"[variables('imageOffer')]",
+                  "sku":"[parameters('linuxOSVersion')]",
+                  "version":"latest"
+               },
+               "osDisk":{
+                  "osType":"Linux",
+                  "name":"[concat(parameters('vmName'),'-OSDisk')]",
+                  "caching":"ReadWrite",
+                  "createOption":"FromImage",
+                  "diskSizeGB":32,
+                  "vhd":{
+                     "uri":"[concat(variables('storageContainerUri'), parameters('vmName'), '-OS.vhd')]"
+                  }
+               }
+            },
+            "networkProfile":{
+               "networkInterfaces":[
+                  {
+                     "id":"[resourceId('Microsoft.Network/networkInterfaces',variables('nicName'))]"
+                  }
+               ]
+            },
+            "diagnosticsProfile":{
+               "bootDiagnostics":{
+                  "enabled":true,
+                  "storageUri":"[concat(reference(concat('Microsoft.Storage/storageAccounts/', variables('storageAccountName')), '2016-01-01').primaryEndpoints.blob)]"
+               }
+            }
+         }
+      },
+      {
+         "type":"Microsoft.Compute/virtualMachines/extensions",
+         "name":"[concat(variables('vmName'),'/newuserscript')]",
+         "apiVersion":"2017-12-01",
+         "location":"[parameters('location')]",
+         "dependsOn":[
+            "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'))]"
+         ],
+         "properties":{
+            "publisher":"Microsoft.Azure.Extensions",
+            "type":"CustomScript",
+            "typeHandlerVersion":"2.0",
+            "autoUpgradeMinorVersion":true,
+            "settings":{
+               "fileUris":[
+                  "[uri(parameters('_artifactsLocationTemplate'), concat(variables('name_scriptFile'), parameters('_artifactsLocationSasToken')))]"
+               ],
+               "commandToExecute":"[concat('sh genericinstall.sh',' ',parameters('acceptOTNLicenseAgreement'),' ',parameters('otnAccountUsername'),' ',parameters('otnAccountPassword'),' ',parameters('shiphomeurl'),' ',parameters('jdkurl'),' ',parameters('wlsversion'),' ',parameters('jdkversion'))]"
+            }
+         }
+      }
+
+   ],
+   "outputs":{
+      "hostname":{
+         "type":"string",
+         "value":"[reference(variables('publicIPAddressName')).dnsSettings.fqdn]"
+      },
+      "sshCommand":{
+         "type":"string",
+         "value":"[concat('ssh ', parameters('adminUsername'), '@', reference(variables('publicIPAddressName')).dnsSettings.fqdn)]"
+      },
+      "OSVHDSaaS":{
+         "type":"string",
+         "value":"[concat(variables('storageContainerUri'),parameters('vmName'),'-OS.vhd?',listAccountSas(variables('StorageAccountName'), '2018-07-01', parameters('accountSasProperties')).accountSasToken)]"
+      },
+      "DDVHDSaaS":{
+         "type":"string",
+         "value":"[concat(variables('storageContainerUri'),parameters('vmName'),'-DD.vhd?',listAccountSas(variables('StorageAccountName'), '2018-07-01', parameters('accountSasProperties')).accountSasToken)]"
+      }
+
+
+   }
+}
