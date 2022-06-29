@@ -159,10 +159,16 @@
       "opatchURL":{
       	"type": "string",
       	"defaultValue":"none",
+      	"metadata":{
+            "description":"URL from where opatch patch can be download"
+         }
       },
       "wlspatchURL":{
       	"type": "string",
       	"defaultValue":"none",
+      	"metadata":{
+            "description":"URL from where wls patch can be download"
+         }
       }
    },
    "variables":{
