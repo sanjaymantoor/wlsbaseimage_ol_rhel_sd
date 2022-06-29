@@ -451,14 +451,12 @@ function opatchUpdate()
 	if [ $opatchURL != "none" ];
 	then
 		sudo mkdir -p ${opatchWork}
+		cd ${opatchWork}
 		filename=${opatchURL##*/}
 		downloadUsingWget "$opatchURL"
-		
 		echo "Verifying the ${filename} patch download"
 		ls  $filename
 		checkSuccess $? "Error : Downloading ${filename} patch failed"
-		
-		cd ${opatchWork}
 		echo "Opatch version before updating patch"
 		runuser -l oracle -c "$oracleHome/OPatch/opatch version"
 		unzip $filename
@@ -478,9 +476,9 @@ function wlspatchUpdate()
 {
 	if [ $wlspatchURL != "none" ];
 	then
-		downloadUsingWget "$wlspatchURL"
 		sudo mkdir -p ${wlsPatchWork}
 		cd ${wlsPatchWork}
+		downloadUsingWget "$wlspatchURL"
 		echo "WLS patch details before applying patch"
 		runuser -l oracle -c "$oracleHome/OPatch/opatch lsinvetory"
 		filename=${wlspatchURL##*/}
