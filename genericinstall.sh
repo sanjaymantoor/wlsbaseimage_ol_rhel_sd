@@ -480,7 +480,7 @@ function wlspatchUpdate()
 		cd ${wlsPatchWork}
 		downloadUsingWget "$wlspatchURL"
 		echo "WLS patch details before applying patch"
-		runuser -l oracle -c "$oracleHome/OPatch/opatch lsinvetory"
+		runuser -l oracle -c "$oracleHome/OPatch/opatch lsinventory"
 		filename=${wlspatchURL##*/}
 		unzip $filename
 		sudo chown -R $username:$groupname ${wlsPatchWork}
