@@ -9,7 +9,7 @@ function echo_stderr ()
 #Function to display usage message
 function usage()
 {
-  echo_stderr "./genericinstall.sh <acceptOTNLicenseAgreement> <otnusername> <otnpassword> <shiphomeurl> <jdkurl> <wlsversion> <jdkversion> <linux version> <opatch URL> <wlspatch URL>"
+  echo_stderr "./genericinstall.sh <acceptOTNLicenseAgreement> <shiphomeurl> <jdkurl> <wlsversion> <jdkversion> <linux version> <opatch URL> <wlspatch URL>"
   echo_stderr " Supply none in case opatch/wlspatch update is not required"
 }
 
@@ -624,14 +624,16 @@ sudo mkdir -p ${user_home_dir}
 sudo chown -R $username:$groupname ${user_home_dir}
 
 #download jdk from OTN
-echo "Downloading jdk from OTN..."
-curl -s https://raw.githubusercontent.com/typekpb/oradown/master/oradown.sh  | bash -s -- --cookie=accept-weblogicserver-server --username="${otnusername}" --password="${otnpassword}" $jdkurl
+echo "Downloading jdk "
+downloadUsingWget "$jdkurl"
+#curl -s https://raw.githubusercontent.com/typekpb/oradown/master/oradown.sh  | bash -s -- --cookie=accept-weblogicserver-server --username="${otnusername}" --password="${otnpassword}" $jdkurl
 
 #validateJDKZipCheckSum $BASE_DIR/jdk-8u131-linux-x64.tar.gz
 
 #Download Weblogic install jar from OTN
-echo "Downloading weblogic install kit from OTN..."
-curl -s https://raw.githubusercontent.com/typekpb/oradown/master/oradown.sh  | bash -s -- --cookie=accept-weblogicserver-server --username="${otnusername}" --password="${otnpassword}" $shiphomeurl
+echo "Downloading weblogic install kit"
+downloadUsingWget $shiphomeurl
+#curl -s https://raw.githubusercontent.com/typekpb/oradown/master/oradown.sh  | bash -s -- --cookie=accept-weblogicserver-server --username="${otnusername}" --password="${otnpassword}" $shiphomeurl
 
 #download Weblogic deploy tool 
 
