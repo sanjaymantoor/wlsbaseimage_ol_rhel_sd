@@ -166,7 +166,6 @@
       "storageAccountType":"Standard_LRS",
       "publicIPAddressName":"[concat(parameters('vmName'),'vmPublicIP')]",
       "publicIPAddressType":"Dynamic",
-      "vmName":"BaseImageVM",
       "vmSize":"[parameters('vmSizeSelect')]",
       "virtualNetworkName":"vmVNET",
       "name_scriptFile": "genericinstall.sh",
@@ -289,7 +288,7 @@
       {
          "type":"Microsoft.Compute/virtualMachines",
          "apiVersion":"2018-10-01",
-         "name":"[variables('vmName')]",
+         "name":"[parameters('vmName')]",
          "location":"[parameters('location')]",
          "dependsOn":[
             "[resourceId('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
@@ -300,7 +299,7 @@
                "vmSize":"[variables('vmSize')]"
             },
             "osProfile":{
-               "computerName":"[variables('vmName')]",
+               "computerName":"[parameters('vmName')]",
                "adminUsername":"[parameters('adminUsername')]",
                "adminPassword":"[parameters('adminPasswordOrKey')]",
                "linuxConfiguration":"[if(equals(parameters('authenticationType'), 'password'), json('null'), variables('linuxConfiguration'))]"
@@ -340,11 +339,11 @@
       },
       {
          "type":"Microsoft.Compute/virtualMachines/extensions",
-         "name":"[concat(variables('vmName'),'/newuserscript')]",
+         "name":"[concat(parameters('vmName'),'/newuserscript')]",
          "apiVersion":"2017-12-01",
          "location":"[parameters('location')]",
          "dependsOn":[
-            "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'))]"
+            "[concat('Microsoft.Compute/virtualMachines/', parameters('vmName'))]"
          ],
          "properties":{
             "publisher":"Microsoft.Azure.Extensions",
