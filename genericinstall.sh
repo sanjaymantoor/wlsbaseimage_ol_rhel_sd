@@ -9,7 +9,7 @@ function echo_stderr ()
 #Function to display usage message
 function usage()
 {
-  echo_stderr "./genericinstall.sh <acceptOTNLicenseAgreement> <shiphomeurl> <jdkurl> <wlsversion> <jdkversion> <linux version> <opatch URL> <wlspatch URL>"
+  echo_stderr "./genericinstall.sh <shiphomeurl> <jdkurl> <wlsversion> <jdkversion> <linux version> <opatch URL> <wlspatch URL>"
   echo_stderr " Supply none in case opatch/wlspatch update is not required"
 }
 
