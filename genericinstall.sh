@@ -511,22 +511,19 @@ function wlspatchUpdate()
 CURR_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 export BASE_DIR="$(readlink -f ${CURR_DIR})"
 
-if [ $# -ne 10 ]
+if [ $# -ne 7 ]
 then
     usage
     exit 1
 fi
 
-export acceptOTNLicenseAgreement="$1"
-export otnusername="$2"
-export otnpassword="$3"
-export shiphomeurl="$4"
-export jdkurl="$5"
-export wlsversion="$6"
-export jdkversion="$7"
-export linuxversion="$8"
-export opatchURL="$9"
-export wlspatchURL="${10}"
+export shiphomeurl="$1"
+export jdkurl="$2"
+export wlsversion="$3"
+export jdkversion="$4"
+export linuxversion="$5"
+export opatchURL="$6"
+export wlspatchURL="$7"
 export WLS_VER=$wlsversion
 export WEBLOGIC_DEPLOY_TOOL=https://github.com/oracle/weblogic-deploy-tooling/releases/download/weblogic-deploy-tooling-1.8.1/weblogic-deploy.zip
 export POSTGRESQL_JDBC_DRIVER_URL=https://jdbc.postgresql.org/download/postgresql-42.3.6.jar
@@ -537,29 +534,6 @@ export oracleHome="/u01/app/wls/install/oracle/middleware/oracle_home"
 export opatchWork="/u01/app/opatch"
 export wlsPatchWork="/u01/app/wlspatch"
 
-if [ -z "$acceptOTNLicenseAgreement" ];
-then
-        echo _stderr "acceptOTNLicenseAgreement is required. Value should be either Y/y or N/n"
-        exit 1
-fi
-
-if [[ ! ${acceptOTNLicenseAgreement} =~ ^[Yy]$ ]];
-then
-    echo "acceptOTNLicenseAgreement value not specified as Y/y (yes). Exiting installation Weblogic Server process."
-    exit 1
-fi
-
-if [[ -z "$otnusername" || -z "$otnpassword" ]]
-then
-        echo_stderr "otnusername or otnpassword is required. "
-        exit 1
-fi
-
-if [[ -z "$linuxversion" ]]
-then
-	echo_stderr "Linux version is required"
-	exit 1
-fi
 
 # Verify whether OS is Oracle Linux or RHEL
 export osName=`hostnamectl | grep CPE |awk '{print $4}'`

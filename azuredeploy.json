@@ -79,24 +79,6 @@
             "description":"SSH Key or password for the Virtual Machine. SSH key is recommended."
          }
       },
-      "acceptOTNLicenseAgreement":{
-         "type":"string",
-         "metadata":{
-            "description":"Do you agree to provide OTN credentials to accept OTN License Agreement? Enter Y or y to agree, else N or n"
-         }
-      },
-      "otnAccountUsername":{
-         "type":"string",
-         "metadata":{
-            "description":"Username for your Oracle Technology Network account"
-         }
-      },
-      "otnAccountPassword":{
-         "type":"securestring",
-         "metadata":{
-            "description":"Password for your Oracle Technology Network account"
-         }
-      },
       "dnsLabelPrefix":{
          "type":"string",
          "metadata":{
@@ -373,7 +355,7 @@
                "fileUris":[
                   "[uri(parameters('_artifactsLocationTemplate'), concat(variables('name_scriptFile'), parameters('_artifactsLocationSasToken')))]"
                ],
-               "commandToExecute":"[concat('sh genericinstall.sh',' ',parameters('acceptOTNLicenseAgreement'),' ',parameters('otnAccountUsername'),' ',parameters('otnAccountPassword'),' ',parameters('shiphomeurl'),' ',parameters('jdkurl'),' ',parameters('wlsversion'),' ',parameters('jdkversion'),' ',parameters('linuxOSVersion'),' ',parameters('opatchURL'),' ',parameters('wlspatchURL'))]"
+               "commandToExecute":"[concat('sh genericinstall.sh',' ',parameters('shiphomeurl'),' ',parameters('jdkurl'),' ',parameters('wlsversion'),' ',parameters('jdkversion'),' ',parameters('linuxOSVersion'),' ',parameters('opatchURL'),' ',parameters('wlspatchURL'))]"
             }
          }
       }
