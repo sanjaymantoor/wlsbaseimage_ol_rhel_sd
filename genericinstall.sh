@@ -597,6 +597,9 @@ cleanup
 sudo mkdir -p ${user_home_dir}
 sudo chown -R $username:$groupname ${user_home_dir}
 
+echo "Installing zip unzip wget vnc-server rng-tools cifs-utils"
+sudo yum install -y zip unzip wget vnc-server rng-tools cifs-utils cloud-utils-growpart gdisk psmisc util-linux
+
 #download jdk from OTN
 echo "Downloading jdk "
 downloadUsingWget "$jdkurl"
@@ -636,8 +639,6 @@ else
     exit 1
 fi
 
-echo "Installing zip unzip wget vnc-server rng-tools cifs-utils"
-sudo yum install -y zip unzip wget vnc-server rng-tools cifs-utils cloud-utils-growpart gdisk psmisc util-linux
 
 #Setting up rngd utils
 sudo systemctl enable rngd 
