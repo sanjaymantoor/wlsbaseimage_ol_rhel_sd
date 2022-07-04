@@ -180,7 +180,8 @@
             ]
          }
       },
-      "subnetRef":"[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), variables('subnetName'))]"
+      "subnetRef":"[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), variables('subnetName'))]",
+      "diskSize": "[if(equals(parameters('linuxType'), 'Oracle'), 32', '64')]"
    },
    "resources":[
       {
@@ -316,7 +317,7 @@
                   "name":"[concat(parameters('vmName'),'-OSDisk')]",
                   "caching":"ReadWrite",
                   "createOption":"FromImage",
-                  "diskSizeGB":32,
+                  "diskSizeGB":"[variables('diskSize')]",
                   "vhd":{
                      "uri":"[concat(variables('storageContainerUri'), parameters('vmName'), '-OS.vhd')]"
                   }
