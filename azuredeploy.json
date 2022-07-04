@@ -158,6 +158,7 @@
       "storageContainerUri":"[concat(concat('https://', variables('storageAccountName'), '.blob.core.windows.net/'), 'vhds/')]",
       "imagePublisher":"[parameters('linuxType')]",
       "imageOffer":"[if(equals(parameters('linuxType'), 'Oracle'), 'Oracle-Linux', 'RHEL')]",
+      "diskSize":"[if(equals(parameters('linuxType'), 'Oracle'), 32, 64)]",      
       "nicName":"vmNIC",
       "addressPrefix":"10.0.0.0/16",
       "subnetName":"Subnet",
@@ -180,8 +181,7 @@
             ]
          }
       },
-      "subnetRef":"[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), variables('subnetName'))]",
-      "diskSize": "[if(equals(parameters('linuxType'), 'Oracle'), 32', '64')]"
+      "subnetRef":"[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), variables('subnetName'))]"
    },
    "resources":[
       {
