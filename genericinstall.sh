@@ -219,15 +219,15 @@ function testJDBCDrivers()
 {
 
 	# Temporarily added for test
-	ls /u01/app/wls/install/oracle/middleware/oracle_home/wlserver/server/lib/postgresql-42.3.6.jar
+	ls /u01/app/wls/install/oracle/middleware/oracle_home/wlserver/server/lib/${POSTGRESQL_JDBC_DRIVER}
 	if [[ $? != 0 ]]; then
-   		echo Downloading postgresql-42.3.6.jar failed
+   		echo Downloading ${POSTGRESQL_JDBC_DRIVER} failed
    		exit 1
 	fi
 	
-	ls /u01/app/wls/install/oracle/middleware/oracle_home/wlserver/server/lib/mssql-jdbc-10.2.1.jre8.jar
+	ls /u01/app/wls/install/oracle/middleware/oracle_home/wlserver/server/lib/${MSSQL_JDBC_DRIVER}
 	if [[ $? != 0 ]]; then
-   		echo Downloading mssql-jdbc-10.2.1.jre8.jar failed
+   		echo Downloading ${MSSQL_JDBC_DRIVER} failed
    		exit 1
 	fi
 }
@@ -236,7 +236,7 @@ function testJDBCDrivers()
 function modifyWLSClasspath()
 {
   echo "Modify WLS CLASSPATH ...."
-  sed -i 's;^WEBLOGIC_CLASSPATH=\"${JAVA_HOME}.*;&\nWEBLOGIC_CLASSPATH="${WL_HOME}/server/lib/postgresql-42.3.6.jar:${WL_HOME}/server/lib/mssql-jdbc-10.2.1.jre8.jar:${WEBLOGIC_CLASSPATH}";' ${WL_HOME}/../oracle_common/common/bin/commExtEnv.sh
+  sed -i 's;^WEBLOGIC_CLASSPATH=\"${JAVA_HOME}.*;&\nWEBLOGIC_CLASSPATH="${WL_HOME}/server/lib/${POSTGRESQL_JDBC_DRIVER}:${WL_HOME}/server/lib/${MSSQL_JDBC_DRIVER}:${WEBLOGIC_CLASSPATH}";' ${WL_HOME}/../oracle_common/common/bin/commExtEnv.sh
   sed -i 's;^WEBLOGIC_CLASSPATH=\"${JAVA_HOME}.*;&\n\n#**WLSAZURECUSTOMSCRIPTEXTENSION** Including Postgresql and MSSSQL JDBC Drivers in Weblogic Classpath;' ${WL_HOME}/../oracle_common/common/bin/commExtEnv.sh
   echo "Modified WLS CLASSPATH."
 }
@@ -527,7 +527,7 @@ export opatchURL="$6"
 export wlspatchURL="$7"
 export WLS_VER=$wlsversion
 export WEBLOGIC_DEPLOY_TOOL=https://github.com/oracle/weblogic-deploy-tooling/releases/download/weblogic-deploy-tooling-1.8.1/weblogic-deploy.zip
-export POSTGRESQL_JDBC_DRIVER_URL=https://jdbc.postgresql.org/download/postgresql-42.3.6.jar
+export POSTGRESQL_JDBC_DRIVER_URL=https://jdbc.postgresql.org/download/postgresql-42.5.1.jar
 export POSTGRESQL_JDBC_DRIVER=${POSTGRESQL_JDBC_DRIVER_URL##*/}
 export MSSQL_JDBC_DRIVER_URL=https://repo.maven.apache.org/maven2/com/microsoft/sqlserver/mssql-jdbc/10.2.1.jre8/mssql-jdbc-10.2.1.jre8.jar
 export MSSQL_JDBC_DRIVER=${MSSQL_JDBC_DRIVER_URL##*/}
