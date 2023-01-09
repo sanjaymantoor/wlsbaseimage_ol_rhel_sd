@@ -236,7 +236,7 @@ function testJDBCDrivers()
 function modifyWLSClasspath()
 {
   echo "Modify WLS CLASSPATH ...."
-  sed -i 's;^WEBLOGIC_CLASSPATH=\"${JAVA_HOME}.*;&\nWEBLOGIC_CLASSPATH="${WL_HOME}/server/lib/${POSTGRESQL_JDBC_DRIVER}:${WL_HOME}/server/lib/${MSSQL_JDBC_DRIVER}:${WEBLOGIC_CLASSPATH}";' ${WL_HOME}/../oracle_common/common/bin/commExtEnv.sh
+  sed -i 's;^WEBLOGIC_CLASSPATH=\"${JAVA_HOME}.*;&\nWEBLOGIC_CLASSPATH="${WL_HOME}/server/lib/postgresql-42.5.1.jar:${WL_HOME}/server/lib/mssql-jdbc-10.2.1.jre8.jar:${WEBLOGIC_CLASSPATH}";' ${WL_HOME}/../oracle_common/common/bin/commExtEnv.sh
   sed -i 's;^WEBLOGIC_CLASSPATH=\"${JAVA_HOME}.*;&\n\n#**WLSAZURECUSTOMSCRIPTEXTENSION** Including Postgresql and MSSSQL JDBC Drivers in Weblogic Classpath;' ${WL_HOME}/../oracle_common/common/bin/commExtEnv.sh
   echo "Modified WLS CLASSPATH."
 }
