@@ -87,8 +87,10 @@
       },
       "linuxOSVersion":{
          "type":"string",
-         "defaultValue":"7.6",
+         "defaultValue":"9.1",
          "allowedValues":[
+         	"9.1",
+         	"8.7",
             "7.6",
             "7.5",
             "7.4",
