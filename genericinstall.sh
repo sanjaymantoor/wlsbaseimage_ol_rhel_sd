@@ -416,6 +416,8 @@ function updateRHELOS()
     	sudo yum makecache
     	echo "Enable repos : --disablerepo='*' --enablerepo='*microsoft*'"
     	sudo yum update -y --disablerepo='*' --enablerepo='*microsoft*'
+    	echo "Update RHEL VM"
+		sudo yum -y update
     elif [ "$linuxversion" == "8_7" ] 
     then
     	echo "Disable non-EUS repos : --disablerepo='*' remove 'rhui-azure-rhel8'"
@@ -425,6 +427,9 @@ function updateRHELOS()
     	sudo yum --config=rhui-microsoft-azure-rhel8-eus.config install rhui-azure-rhel8-eus
     	echo "Lock the releasever variable "
     	sudo echo $(. /etc/os-release && echo $VERSION_ID) > /etc/yum/vars/releasever
+    	echo "Update RHEL VM"
+		sudo yum -y update
+    	
     elif [ "$linuxversion" == "9_1" ]
     then
     	# As of now we don't have rhui-microsoft-azure-rhel9-eus.config hence commented out
@@ -444,10 +449,10 @@ function updateRHELOS()
 		echo "Lock the releasever variable "
 		sudo echo $(. /etc/os-release && echo $VERSION_ID) > /etc/yum/vars/releasever
 		sudo cat /etc/yum/vars/releasever
+		echo "Update RHEL VM"
+		sudo yum -y update
 	fi
 	
-	echo "Update RHEL VM"
-	sudo yum -y update
 	echo "Kernel version after update:"
 	uname -a	
 }
