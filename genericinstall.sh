@@ -453,7 +453,6 @@ function updateRHELOS()
 		echo "Update RHEL VM"
 		sudo yum -y update
 	fi
-	
 	echo "Kernel version after update:"
 	uname -a	
 }
