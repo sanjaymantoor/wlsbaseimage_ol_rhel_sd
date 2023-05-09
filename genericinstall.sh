@@ -416,15 +416,32 @@ function updateRHELOS()
     	sudo yum makecache
     	echo "Enable repos : --disablerepo='*' --enablerepo='*microsoft*'"
     	sudo yum update -y --disablerepo='*' --enablerepo='*microsoft*'
+    elif [ "$linuxversion" == "8.7" ] 
+    	echo "Disable non-EUS repos : --disablerepo='*' remove 'rhui-azure-rhel8'"
+    	sudo yum --disablerepo='*' remove 'rhui-azure-rhel8'
+    	echo "Add EUS repos:https://rhelimage.blob.core.windows.net/repositories/rhui-microsoft-azure-rhel8-eus.config"
+    	sudo wget https://rhelimage.blob.core.windows.net/repositories/rhui-microsoft-azure-rhel8-eus.config
+    	sudo yum --config=rhui-microsoft-azure-rhel8-eus.config install rhui-azure-rhel8-eus
+    	echo "Lock the releasever variable "
+    	sudo echo $(. /etc/os-release && echo $VERSION_ID) > /etc/yum/vars/releasever
+    elif [ "$linuxversion" == "9.1" ]
+    	echo "Disable non-EUS repos : --disablerepo='*' remove 'rhui-azure-rhel9'"
+    	sudo yum --disablerepo='*' remove 'rhui-azure-rhel9'
+    	echo "Add EUS repos:https://rhelimage.blob.core.windows.net/repositories/rhui-microsoft-azure-rhel9-eus.config"
+    	sudo wget https://rhelimage.blob.core.windows.net/repositories/rhui-microsoft-azure-rhel9-eus.config
+    	sudo yum --config=rhui-microsoft-azure-rhel8-eus.config install rhui-azure-rhel9-eus
+    	echo "Lock the releasever variable"
+    	sudo echo $(. /etc/os-release && echo $VERSION_ID) > /etc/yum/vars/releasever
+    else
+		echo "Disable non-EUS repos : --disablerepo='*' remove 'rhui-azure-rhel7'"
+		sudo yum -y --disablerepo='*' remove 'rhui-azure-rhel7'
+		echo "Add EUS repos:https://rhelimage.blob.core.windows.net/repositories/rhui-microsoft-azure-rhel7-eus.config" 
+		sudo yum -y --config='https://rhelimage.blob.core.windows.net/repositories/rhui-microsoft-azure-rhel7-eus.config' install 'rhui-azure-rhel7-eus'
+		echo "Lock the releasever variable "
+		sudo echo $(. /etc/os-release && echo $VERSION_ID) > /etc/yum/vars/releasever
+		sudo cat /etc/yum/vars/releasever
 	fi
 	
-	echo "Disable non-EUS repos : --disablerepo='*' remove 'rhui-azure-rhel7'"
-	sudo yum -y --disablerepo='*' remove 'rhui-azure-rhel7'
-	echo "Add EUS repos:https://rhelimage.blob.core.windows.net/repositories/rhui-microsoft-azure-rhel7-eus.config" 
-	sudo yum -y --config='https://rhelimage.blob.core.windows.net/repositories/rhui-microsoft-azure-rhel7-eus.config' install 'rhui-azure-rhel7-eus'
-	echo "Lock the releasever variable "
-	sudo echo $(. /etc/os-release && echo $VERSION_ID) > /etc/yum/vars/releasever
-	sudo cat /etc/yum/vars/releasever
 	echo "Update RHEL VM"
 	sudo yum -y update
 	echo "Kernel version after update:"
