@@ -430,8 +430,8 @@ function updateRHELOS()
     	echo "Disable non-EUS repos : --disablerepo='*' remove 'rhui-azure-rhel9'"
     	sudo yum --disablerepo='*' remove 'rhui-azure-rhel9'
     	echo "Add EUS repos:https://rhelimage.blob.core.windows.net/repositories/rhui-microsoft-azure-rhel9-eus.config"
-    	sudo wget https://rhelimage.blob.core.windows.net/repositories/rhui-microsoft-azure-rhel9-eus.config
-    	sudo yum --config=rhui-microsoft-azure-rhel8-eus.config install rhui-azure-rhel9-eus
+    	sudo wget https://rhelimage.blob.core.windows.net/repositories/rhui-microsoft-azure-rhel9-eus.config | true
+    	sudo yum --config=rhui-microsoft-azure-rhel8-eus.config install rhui-azure-rhel9-eus | true
     	echo "Lock the releasever variable"
     	sudo echo $(. /etc/os-release && echo $VERSION_ID) > /etc/yum/vars/releasever
     else
