@@ -410,7 +410,7 @@ function updateRHELOS()
 	echo "Locking version to linux version : $linuxversion"
 	echo "Kernel version before update:"
 	uname -a
-	if [ "$linuxversion" == "7.3" ]
+    if [ "$linuxversion" == "7.3" ]
 	then
     	sudo yum clean all
     	sudo yum makecache
