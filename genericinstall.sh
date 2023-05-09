@@ -417,6 +417,7 @@ function updateRHELOS()
     	echo "Enable repos : --disablerepo='*' --enablerepo='*microsoft*'"
     	sudo yum update -y --disablerepo='*' --enablerepo='*microsoft*'
     elif [ "$linuxversion" == "8.7" ] 
+    then
     	echo "Disable non-EUS repos : --disablerepo='*' remove 'rhui-azure-rhel8'"
     	sudo yum --disablerepo='*' remove 'rhui-azure-rhel8'
     	echo "Add EUS repos:https://rhelimage.blob.core.windows.net/repositories/rhui-microsoft-azure-rhel8-eus.config"
@@ -425,6 +426,7 @@ function updateRHELOS()
     	echo "Lock the releasever variable "
     	sudo echo $(. /etc/os-release && echo $VERSION_ID) > /etc/yum/vars/releasever
     elif [ "$linuxversion" == "9.1" ]
+    then
     	echo "Disable non-EUS repos : --disablerepo='*' remove 'rhui-azure-rhel9'"
     	sudo yum --disablerepo='*' remove 'rhui-azure-rhel9'
     	echo "Add EUS repos:https://rhelimage.blob.core.windows.net/repositories/rhui-microsoft-azure-rhel9-eus.config"
