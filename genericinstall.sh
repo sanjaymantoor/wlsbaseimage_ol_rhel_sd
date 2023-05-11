@@ -651,7 +651,7 @@ downloadUsingWget "$jdkurl"
 echo "Downloading weblogic install kit"
 downloadUsingWget $shiphomeurl
 
-ecit $?
+exit $?
 
 #curl -s https://raw.githubusercontent.com/typekpb/oradown/master/oradown.sh  | bash -s -- --cookie=accept-weblogicserver-server --username="${otnusername}" --password="${otnpassword}" $shiphomeurl
 
