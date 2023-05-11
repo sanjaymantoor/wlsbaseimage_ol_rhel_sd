@@ -662,7 +662,8 @@ export PATH=$JAVA_HOME/bin:$PATH
 echo "JAVA_HOME set to $JAVA_HOME"
 echo "PATH set to $PATH"
 
-java -version
+java -version > out 2>&1
+cat out
 
 if [ $? == 0 ];
 then
