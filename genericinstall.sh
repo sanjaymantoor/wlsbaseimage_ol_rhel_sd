@@ -675,11 +675,6 @@ echo "PATH set to $PATH"
 java -version > out 2>&1
 cat out
 
-ec=$?
-
-echo "Status code : $ec"
-exit $ec
-
 if [ $? == 0 ];
 then
     echo "JAVA HOME set succesfully."
@@ -717,6 +712,8 @@ create_oraUninstallResponseTemplate
 
 installWLS
 
+
+
 setupWDT
 
 downloadJDBCDrivers
@@ -726,6 +723,10 @@ copyJDBCDriversToWeblogicClassPath
 modifyWLSClasspath
 
 testJDBCDrivers
+
+ec=$?
+echo "Status code : $ec"
+exit $ec
 
 
 #Update Opatch
