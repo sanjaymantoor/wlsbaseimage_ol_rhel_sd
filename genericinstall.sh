@@ -741,10 +741,6 @@ fi
 
 echo "Weblogic Server Installation Completed succesfully."
 
-ec=$?
-echo "Status code : $ec"
-exit $ec
-
 cleanup
 
 echo "Removing history for oracle user"
