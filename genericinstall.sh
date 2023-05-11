@@ -591,7 +591,7 @@ else
 	createSwap
 fi
 
-exit 0
+echo "Execution code=$?"
 
 #add oracle group and user
 echo "Adding oracle user and group..."
@@ -629,6 +629,8 @@ sudo chown -R $username:$groupname ${user_home_dir}
 echo "Installing zip unzip wget rng-tools cifs-utils"
 sudo yum install -y zip unzip wget rng-tools cifs-utils cloud-utils-growpart gdisk psmisc util-linux
 
+echo "Execution code=$?"
+
 # Update /etc/ssh/sshd_config for ClientAliveInterval
 # This is required as per Azure certification. https://docs.microsoft.com/en-us/azure/marketplace/azure-vm-certification-faq#linux-test-cases
 # Or else product at marketplace submission will fail at certification
@@ -638,6 +640,9 @@ sudo sed -i 's|#ClientAliveInterval*.*|ClientAliveInterval 180|g' /etc/ssh/sshd_
 #download jdk from OTN
 echo "Downloading jdk "
 downloadUsingWget "$jdkurl"
+
+echo "Execution code=$?"
+
 #curl -s https://raw.githubusercontent.com/typekpb/oradown/master/oradown.sh  | bash -s -- --cookie=accept-weblogicserver-server --username="${otnusername}" --password="${otnpassword}" $jdkurl
 
 #validateJDKZipCheckSum $BASE_DIR/jdk-8u131-linux-x64.tar.gz
@@ -645,6 +650,9 @@ downloadUsingWget "$jdkurl"
 #Download Weblogic install jar from OTN
 echo "Downloading weblogic install kit"
 downloadUsingWget $shiphomeurl
+
+echo "Execution code=$?"
+
 #curl -s https://raw.githubusercontent.com/typekpb/oradown/master/oradown.sh  | bash -s -- --cookie=accept-weblogicserver-server --username="${otnusername}" --password="${otnpassword}" $shiphomeurl
 
 #download Weblogic deploy tool 
@@ -667,6 +675,8 @@ echo "PATH set to $PATH"
 java -version > out 2>&1
 cat out
 
+echo "Execution code=$?"
+
 if [ $? == 0 ];
 then
     echo "JAVA HOME set succesfully."
@@ -681,6 +691,8 @@ sudo systemctl enable rngd
 sudo systemctl status rngd
 sudo systemctl start rngd
 sudo systemctl status rngd
+
+echo "Execution code=$?"
 
 echo "unzipping wls install archive..."
 sudo unzip -o $WLS_PATH/fmw_*.zip -d $WLS_PATH
