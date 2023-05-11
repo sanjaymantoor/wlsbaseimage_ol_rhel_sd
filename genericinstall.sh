@@ -624,8 +624,8 @@ cleanup
 sudo mkdir -p ${user_home_dir}
 sudo chown -R $username:$groupname ${user_home_dir}
 
-echo "Installing zip unzip wget vnc-server rng-tools cifs-utils"
-sudo yum install -y zip unzip wget vnc-server rng-tools cifs-utils cloud-utils-growpart gdisk psmisc util-linux
+echo "Installing zip unzip wget rng-tools cifs-utils"
+sudo yum install -y zip unzip wget rng-tools cifs-utils cloud-utils-growpart gdisk psmisc util-linux
 
 # Update /etc/ssh/sshd_config for ClientAliveInterval
 # This is required as per Azure certification. https://docs.microsoft.com/en-us/azure/marketplace/azure-vm-certification-faq#linux-test-cases
