@@ -591,6 +591,8 @@ else
 	createSwap
 fi
 
+exit 0
+
 #add oracle group and user
 echo "Adding oracle user and group..."
 groupname="oracle"
