@@ -651,7 +651,7 @@ downloadUsingWget "$jdkurl"
 echo "Downloading weblogic install kit"
 downloadUsingWget $shiphomeurl
 
-exit $?
+
 
 #curl -s https://raw.githubusercontent.com/typekpb/oradown/master/oradown.sh  | bash -s -- --cookie=accept-weblogicserver-server --username="${otnusername}" --password="${otnpassword}" $shiphomeurl
 
@@ -675,7 +675,10 @@ echo "PATH set to $PATH"
 java -version > out 2>&1
 cat out
 
+ec=$?
 
+echo "Status code : $ec"
+exit $ec
 
 if [ $? == 0 ];
 then
