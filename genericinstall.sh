@@ -724,14 +724,14 @@ modifyWLSClasspath
 
 testJDBCDrivers
 
+#Update Opatch
+opatchUpdate
+wlspatchUpdate
+
 ec=$?
 echo "Status code : $ec"
 exit $ec
 
-
-#Update Opatch
-opatchUpdate
-wlspatchUpdate
 
 if [[ $osName == *"oracle"* ]]; then
 	updateOLOS
