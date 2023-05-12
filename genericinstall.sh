@@ -742,6 +742,7 @@ echo "Weblogic Server Installation Completed succesfully."
 
 cleanup
 
+whoami 
 echo "Removing history for oracle user"
 runuser -l oracle -c "history -c && history -w && exit"
 #echo "Removing history for root user"
