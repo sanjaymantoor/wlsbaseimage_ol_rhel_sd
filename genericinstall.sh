@@ -747,5 +747,4 @@ runuser -l oracle -c "history -c && history -w && exit"
 echo "Removing history for root user"
 history -c
 history -w | true 
-ec=$?
-echo "Status code : $ec"
+exit 0
