@@ -746,8 +746,10 @@ whoami
 echo "Removing history for oracle user"
 runuser -l oracle -c "history -c && history -w && exit"
 echo "Removing history for root user"
-history -c 
+history -c
+ec=$?
+echo "Status code : $ec"
+
 history -w
 ec=$?
 echo "Status code : $ec"
-exit $ec
