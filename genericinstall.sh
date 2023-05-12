@@ -712,8 +712,6 @@ create_oraUninstallResponseTemplate
 
 installWLS
 
-
-
 setupWDT
 
 downloadJDBCDrivers
@@ -744,14 +742,10 @@ echo "Weblogic Server Installation Completed succesfully."
 
 cleanup
 
-ec=$?
-echo "Status code : $ec"
-exit $ec
-
 echo "Removing history for oracle user"
 runuser -l oracle -c "history -c && history -w && exit"
 echo "Removing history for root user"
 history -c && history -w && exit
-#sudo last reboot
-#sudo reboot
-#echo "Rebooted"
+ec=$?
+echo "Status code : $ec"
+exit $ec
