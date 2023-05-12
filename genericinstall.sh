@@ -745,7 +745,7 @@ cleanup
 echo "Removing history for oracle user"
 runuser -l oracle -c "history -c && history -w && exit"
 echo "Removing history for root user"
-history -c && history -w && exit
+sudo history -c && history -w
 ec=$?
 echo "Status code : $ec"
 exit $ec
