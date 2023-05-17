@@ -85,12 +85,23 @@
             "description":"Unique DNS Name for the Public IP used to access the Virtual Machine."
          }
       },
+      "urn": {
+         "type":"string",
+         "defaultValue":"Oracle:Oracle-Linux:ol87-lvm:latest",
+         "allowedValues":[
+         	"Oracle:Oracle-Linux:ol87-lvm:latest",
+         	"Oracle:Oracle-Linux:ol9-lvm:latest"
+         ],
+         "metadata":{
+            "description":"The Oracle Linux version for the VM. This will pick a fully patched image of this given Oracle Linux version."
+         }
+      },
       "linuxOSVersion":{
          "type":"string",
          "defaultValue":"7.6",
          "allowedValues":[
-         	"9_1",
-         	"8_7",
+            "9.1",
+         	"8.7",
             "7.6",
             "7.5",
             "7.4",
@@ -158,8 +169,9 @@
    "variables":{
       "storageAccountName":"[substring(concat(replace(resourceGroup().name,'-',''),uniquestring(resourceGroup().id),'xxxxxxxxxx'),0,23)]",
       "storageContainerUri":"[concat(concat('https://', variables('storageAccountName'), '.blob.core.windows.net/'), 'vhds/')]",
-      "imagePublisher":"[parameters('linuxType')]",
-      "imageOffer":"[if(equals(parameters('linuxType'), 'Oracle'), 'Oracle-Linux', 'RHEL')]",
+      "imagePublisher": "[split(parameters('urn'),':')[0]]",
+      "imageOffer": "[split(parameters('urn'),':')[1]]", 
+      "sku": "[split(parameters('urn'),':')[2]]",
       "diskSize":"[if(equals(parameters('linuxType'), 'Oracle'), 32, 64)]",      
       "nicName":"vmNIC",
       "addressPrefix":"10.0.0.0/16",
@@ -311,7 +323,7 @@
                "imageReference":{
                   "publisher":"[variables('imagePublisher')]",
                   "offer":"[variables('imageOffer')]",
-                  "sku":"[parameters('linuxOSVersion')]",
+                  "sku":"[variables('sku')]",
                   "version":"latest"
                },
                "osDisk":{
