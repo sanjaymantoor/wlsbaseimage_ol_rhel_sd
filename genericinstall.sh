@@ -98,6 +98,7 @@ function mountDataDisk()
 
 #This function is to create swapfile required for WebLogic installation
 # This is temporary swap to be created for WLS but for permanent it needs to be created using createSwapWithWALinux
+#https://learn.microsoft.com/en-us/troubleshoot/azure/virtual-machines/swap-file-not-recreated-linux-vm-restart
 function createSwap()
 {
 
@@ -586,11 +587,12 @@ else
 	# mount the data disk for JDK and WLS setup
 	# This has to run first as data disk is mounted /u01 directory
 	#mountDataDisk
-	
-	# Create swap file, which is required for WLS installation
-	createSwap
 fi
 
+# Create swap file, which is required for WLS installation
+# It is required for OL8.7 and above
+# It is required for RHEL 7.6 and above
+createSwap
 
 
 #add oracle group and user
