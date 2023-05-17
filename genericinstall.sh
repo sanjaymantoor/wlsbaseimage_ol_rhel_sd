@@ -570,8 +570,6 @@ if [[ $osName == *"oracle"* ]]; then
 	echo "Oracle OS selected"
 else
 	echo "RHEL OS and need to perform some disk operations"
-	export SWAP_FILE_DIR="/mnt"
-	export SWAP_FILE="$SWAP_FILE_DIR/swapfile"
 	# Resize the disk if / disk space is less than rootDiskSizeLimit
 	export rootDiskSizeLimit="6"
 	
@@ -592,6 +590,8 @@ fi
 # Create swap file, which is required for WLS installation
 # It is required for OL8.7 and above
 # It is required for RHEL 7.6 and above
+export SWAP_FILE_DIR="/mnt"
+export SWAP_FILE="$SWAP_FILE_DIR/swapfile"
 createSwap
 
 
