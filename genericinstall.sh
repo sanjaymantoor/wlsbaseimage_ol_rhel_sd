@@ -142,6 +142,7 @@ function createSwapWithWALinux()
    sudo sed -i 's,ResourceDisk.MountPoint=\/mnt\/resource,ResourceDisk.MountPoint='"$SWAP_FILE_DIR"',' /etc/waagent.conf
    sudo sed -i 's/ResourceDisk.Format=n/ResourceDisk.Format=y/g' /etc/waagent.conf
    sudo sed -i 's/ResourceDisk.EnableSwap=n/ResourceDisk.EnableSwap=y/g' /etc/waagent.conf
+   sudo sed -i 's/ResourceDisk.SwapSizeMB=0/ResourceDisk.SwapSizeMB=2048/g' /etc/waagent.conf
 }
 
 
