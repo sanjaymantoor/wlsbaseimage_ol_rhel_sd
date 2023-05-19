@@ -467,8 +467,8 @@ function updateOLOS()
 	minorVersion=`echo $osVersion |cut -f2 -d"."`
 	echo "Kernel version before update:"
 	uname -a
-	echo yum upgrade -y --disablerepo=ol${majorVersion}_baseos_latest  --enablerepo=ol${majorVersion}_UEKR${minorVersion} 
-	yum upgrade -y --disablerepo=ol${majorVersion}_baseos_latest  --enablerepo=ol${majorVersion}_UEKR${minorVersion}
+	echo yum upgrade -y --disablerepo=ol${majorVersion}_baseos_latest  --enablerepo=ol${majorVersion}_UEKR7 
+	yum upgrade -y --disablerepo=ol${majorVersion}_baseos_latest  --enablerepo=ol${majorVersion}_UEKR7
 	yum upgrade -y polkit
 	echo "Kernel version after update:"
 	uname -a
