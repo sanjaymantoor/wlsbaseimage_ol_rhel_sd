@@ -90,7 +90,9 @@
          "defaultValue":"Oracle:Oracle-Linux:ol87-lvm:latest",
          "allowedValues":[
          	"Oracle:Oracle-Linux:ol87-lvm:latest",
-         	"Oracle:Oracle-Linux:ol91-lvm:latest"
+         	"Oracle:Oracle-Linux:ol91-lvm:latest",
+         	"RedHat:RHEL:9_1:latest",
+         	"RedHat:RHEL:8_7:latest"
          ],
          "metadata":{
             "description":"The Oracle Linux version for the VM. This will pick a fully patched image of this given Oracle Linux version."
