@@ -422,6 +422,7 @@ function updateRHELOS()
 		sudo yum -y update
     elif [ "$linuxversion" == "8_7" ] 
     then
+    	# Refer https://learn.microsoft.com/en-us/azure/virtual-machines/workloads/redhat/redhat-rhui
     	echo "Disable non-EUS repos : --disablerepo='*' remove 'rhui-azure-rhel8'"
     	sudo yum --disablerepo='*' remove 'rhui-azure-rhel8'
     	echo "Add EUS repos:https://rhelimage.blob.core.windows.net/repositories/rhui-microsoft-azure-rhel8-eus.config"
