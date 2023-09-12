@@ -431,7 +431,12 @@ function updateRHELOS()
     	echo "Lock the releasever variable "
     	sudo echo $(. /etc/os-release && echo $VERSION_ID) > /etc/yum/vars/releasever
     	echo "Update RHEL VM"
-		sudo yum -y update
+	sudo yum -y update
+ 	echo "Unlocking the release version"
+ 	sudo rm /etc/yum/vars/releasever
+  	sudo yum --disablerepo='*' remove 'rhui-azure-rhel8-eus'
+   	curl -O https://rhelimage.blob.core.windows.net/repositories/rhui-microsoft-azure-rhel8.config
+    	sudo yum --config=rhui-microsoft-azure-rhel8.config install rhui-azure-rhel8
     elif [ "$linuxversion" == "9_1" ]
     then
     	# As of now we don't have rhui-microsoft-azure-rhel9-eus.config hence commented out
