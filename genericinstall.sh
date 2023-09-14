@@ -420,7 +420,7 @@ function updateRHELOS()
     	sudo yum update -y --disablerepo='*' --enablerepo='*microsoft*'
     	echo "Update RHEL VM"
 		sudo yum -y update
-    elif [ "$linuxversion" == "8_7" ] 
+    elif [ "$linuxversion" == "8.7" ] 
     then
     	# Refer https://learn.microsoft.com/en-us/azure/virtual-machines/workloads/redhat/redhat-rhui
     	echo "Disable non-EUS repos : --disablerepo='*' remove 'rhui-azure-rhel8'"
@@ -437,7 +437,7 @@ function updateRHELOS()
   	sudo yum --disablerepo='*' remove 'rhui-azure-rhel8-eus'
    	curl -O https://rhelimage.blob.core.windows.net/repositories/rhui-microsoft-azure-rhel8.config
     	sudo yum --config=rhui-microsoft-azure-rhel8.config install rhui-azure-rhel8
-    elif [ "$linuxversion" == "9_1" ]
+    elif [ "$linuxversion" == "9.1" ]
     then
     	# As of now we don't have rhui-microsoft-azure-rhel9-eus.config hence commented out
     	# Also we don't have any latest version than 9.1
