@@ -568,7 +568,8 @@ export MSSQL_JDBC_DRIVER=${MSSQL_JDBC_DRIVER_URL##*/}
 export oracleHome="/u01/app/wls/install/oracle/middleware/oracle_home"
 export opatchWork="/u01/app/opatch"
 export wlsPatchWork="/u01/app/wlspatch"
-
+# Added as 151100 wls file naming convention changed
+export wlsFileName=${shiphomeurl##*/}
 
 # Verify whether OS is Oracle Linux or RHEL
 export osName=`hostnamectl | grep CPE |awk '{print $4}'`
@@ -660,15 +661,14 @@ downloadUsingWget "$jdkurl"
 echo "Downloading weblogic install kit"
 downloadUsingWget $shiphomeurl
 
-
-
 #curl -s https://raw.githubusercontent.com/typekpb/oradown/master/oradown.sh  | bash -s -- --cookie=accept-weblogicserver-server --username="${otnusername}" --password="${otnpassword}" $shiphomeurl
 
 #download Weblogic deploy tool 
 
 sudo chown -R $username:$groupname /u01/app
 
-sudo cp $BASE_DIR/fmw_*.zip $WLS_PATH/
+#sudo cp $BASE_DIR/fmw_*.zip $WLS_PATH/
+sudo cp $BASE_DIR/$wlsFileName $WLS_PATH/
 sudo cp $BASE_DIR/jdk-*.tar.gz $JDK_PATH/
 
 echo "extracting and setting up jdk..."
@@ -702,7 +702,8 @@ sudo systemctl status rngd
 
 
 echo "unzipping wls install archive..."
-sudo unzip -o $WLS_PATH/fmw_*.zip -d $WLS_PATH
+#sudo unzip -o $WLS_PATH/fmw_*.zip -d $WLS_PATH
+sudo unzip -o $WLS_PATH/$wlsFileName -d $WLS_PATH
 
 export SILENT_FILES_DIR=$WLS_PATH/silent-template
 sudo mkdir -p $SILENT_FILES_DIR
