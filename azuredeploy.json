@@ -89,6 +89,7 @@
          "type":"string",
          "defaultValue":"Oracle:Oracle-Linux:ol87-lvm:latest",
          "allowedValues":[
+            "Oracle:Oracle-Linux:ol87-lvm:latest",
          	"Oracle:Oracle-Linux:ol87-lvm:latest",
          	"Oracle:Oracle-Linux:ol91-lvm:latest",
          	"RedHat:RHEL:9_1:latest",
@@ -103,6 +104,7 @@
          "defaultValue":"7.6",
          "allowedValues":[
             "9.1",
+            "8.10",
          	"8.7",
             "7.6",
             "7.5",
