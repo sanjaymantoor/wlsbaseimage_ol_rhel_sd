@@ -174,7 +174,7 @@
       "imagePublisher": "[split(parameters('urn'),':')[0]]",
       "imageOffer": "[split(parameters('urn'),':')[1]]", 
       "sku": "[split(parameters('urn'),':')[2]]",
-      "diskSize":"[if(equals(parameters('linuxType'), 'Oracle'), 32, 64)]",      
+      "diskSize":"[if(equals(parameters('linuxType'), 'Oracle'), 49, 64)]",      
       "nicName":"vmNIC",
       "addressPrefix":"10.0.0.0/16",
       "subnetName":"Subnet",
