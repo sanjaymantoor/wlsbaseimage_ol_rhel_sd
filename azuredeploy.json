@@ -202,7 +202,7 @@
    "resources":[
       {
          "type":"Microsoft.Network/publicIPAddresses",
-         "apiVersion":"2018-11-01",
+         "apiVersion":"2022-11-01",
          "name":"[variables('publicIPAddressName')]",
          "location":"[parameters('location')]",
          "properties":{
