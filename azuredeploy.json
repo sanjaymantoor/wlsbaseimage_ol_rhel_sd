@@ -369,16 +369,6 @@
       "sshCommand":{
          "type":"string",
          "value":"[concat('ssh ', parameters('adminUsername'), '@', reference(variables('publicIPAddressName')).dnsSettings.fqdn)]"
-      },
-      "OSVHDSaaS":{
-         "type":"string",
-         "value":"[concat(variables('storageContainerUri'),parameters('vmName'),'-OS.vhd?',listAccountSas(variables('StorageAccountName'), '2018-07-01', parameters('accountSasProperties')).accountSasToken)]"
-      },
-      "DDVHDSaaS":{
-         "type":"string",
-         "value":"[concat(variables('storageContainerUri'),parameters('vmName'),'-DD.vhd?',listAccountSas(variables('StorageAccountName'), '2018-07-01', parameters('accountSasProperties')).accountSasToken)]"
       }
-
-
    }
 }
