@@ -171,8 +171,6 @@
       }
    },
    "variables":{
-      "storageAccountName":"[substring(concat(replace(resourceGroup().name,'-',''),uniquestring(resourceGroup().id),'xxxxxxxxxx'),0,23)]",
-      "storageContainerUri":"[concat(concat('https://', variables('storageAccountName'), '.blob.core.windows.net/'), 'vhds/')]",
       "imagePublisher": "[split(parameters('urn'),':')[0]]",
       "imageOffer": "[split(parameters('urn'),':')[1]]", 
       "sku": "[split(parameters('urn'),':')[2]]",
@@ -202,19 +200,6 @@
       "subnetRef":"[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), variables('subnetName'))]"
    },
    "resources":[
-      {
-         "type":"Microsoft.Storage/storageAccounts",
-         "apiVersion":"2018-11-01",
-         "name":"[variables('storageAccountName')]",
-         "location":"[parameters('location')]",
-         "sku":{
-            "name":"[variables('storageAccountType')]"
-         },
-         "kind":"Storage",
-         "properties":{
-
-         }
-      },
       {
          "type":"Microsoft.Network/publicIPAddresses",
          "apiVersion":"2018-11-01",
@@ -310,7 +295,6 @@
          "name":"[parameters('vmName')]",
          "location":"[parameters('location')]",
          "dependsOn":[
-            "[resourceId('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
             "[resourceId('Microsoft.Network/networkInterfaces/', variables('nicName'))]"
          ],
          "properties":{
@@ -333,12 +317,11 @@
                "osDisk":{
                   "osType":"Linux",
                   "name":"[concat(parameters('vmName'),'-OSDisk')]",
-                  "caching":"ReadWrite",
+                  "managedDisk": {
+                  	"storageAccountType": "[variables('storageAccountType')]"
+                  },
                   "createOption":"FromImage",
-                  "diskSizeGB":"[variables('diskSize')]",
-                  "vhd":{
-                     "uri":"[concat(variables('storageContainerUri'), parameters('vmName'), '-OS.vhd')]"
-                  }
+                  "diskSizeGB":"[variables('diskSize')]"
                }
             },
             "networkProfile":{
