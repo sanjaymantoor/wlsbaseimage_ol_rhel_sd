@@ -239,10 +239,10 @@ function modifyWLSClasspath()
 {
   echo "Modify WLS CLASSPATH ...."
   if [[ $wlsVersion == 12.2.1.4.0 ]] || [[ $wlsVersion == 14.1.1.0.0 ]]; then
-    sed -i 's;^WEBLOGIC_CLASSPATH=\"${JAVA_HOME}.*;&\nWEBLOGIC_CLASSPATH="${WL_HOME}/server/lib/postgresql-42.5.1.jar:${WL_HOME}/server/lib/mssql-jdbc-10.2.1.jre8.jar:${WEBLOGIC_CLASSPATH}";' ${WL_HOME}/../oracle_common/common/bin/commExtEnv.sh
+    sed -i 's;^WEBLOGIC_CLASSPATH=\"${JAVA_HOME}.*;&\nWEBLOGIC_CLASSPATH="${WL_HOME}/server/lib/postgresql-42.7.5.jar:${WL_HOME}/server/lib/mssql-jdbc-10.2.1.jre8.jar:${WEBLOGIC_CLASSPATH}";' ${WL_HOME}/../oracle_common/common/bin/commExtEnv.sh
   	sed -i 's;^WEBLOGIC_CLASSPATH=\"${JAVA_HOME}.*;&\n\n#**WLSAZURECUSTOMSCRIPTEXTENSION** Including Postgresql and MSSSQL JDBC Drivers in Weblogic Classpath;' ${WL_HOME}/../oracle_common/common/bin/commExtEnv.sh
   else		
-	sed -i 's;^WEBLOGIC_CLASSPATH=\"${CLASSPATHSEP}.*;&\nWEBLOGIC_CLASSPATH="${WL_HOME}/server/lib/postgresql-42.5.1.jar:${WL_HOME}/server/lib/mssql-jdbc-11.2.3.jre17.jar:${WEBLOGIC_CLASSPATH}";' ${WL_HOME}/../oracle_common/common/bin/commExtEnv.sh
+	sed -i 's;^WEBLOGIC_CLASSPATH=\"${CLASSPATHSEP}.*;&\nWEBLOGIC_CLASSPATH="${WL_HOME}/server/lib/postgresql-42.7.5.jar:${WL_HOME}/server/lib/mssql-jdbc-11.2.3.jre17.jar:${WEBLOGIC_CLASSPATH}";' ${WL_HOME}/../oracle_common/common/bin/commExtEnv.sh
 	sed -i 's;^WEBLOGIC_CLASSPATH=\"${JAVA_HOME}.*;&\n\n#**WLSAZURECUSTOMSCRIPTEXTENSION** Including Postgresql and MSSSQL JDBC Drivers in Weblogic Classpath;' ${WL_HOME}/../oracle_common/common/bin/commExtEnv.sh  
   fi
   echo "Modified WLS CLASSPATH."
@@ -574,7 +574,8 @@ export wlsPatchWork="/u01/app/wlspatch"
 export wlsFileName=${shiphomeurl##*/}
 # Verify whether OS is Oracle Linux or RHEL
 export osName=`hostnamectl | grep CPE |awk '{print $4}'`
-export POSTGRESQL_JDBC_DRIVER_URL=https://jdbc.postgresql.org/download/postgresql-42.5.1.jar
+#export POSTGRESQL_JDBC_DRIVER_URL=https://jdbc.postgresql.org/download/postgresql-42.5.1.jar
+export POSTGRESQL_JDBC_DRIVER_URL=https://jdbc.postgresql.org/download/postgresql-42.7.5.jar
 export POSTGRESQL_JDBC_DRIVER=${POSTGRESQL_JDBC_DRIVER_URL##*/}
 
 if [[ $wlsVersion == 12.2.1.4.0 ]] || [[ $wlsVersion == 14.1.1.0.0 ]]; then
