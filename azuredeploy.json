@@ -90,6 +90,7 @@
          "defaultValue":"Oracle:Oracle-Linux:ol87-lvm:latest",
          "allowedValues":[
             "Oracle:Oracle-Linux:ol810-lvm-gen2:latest",
+            "Oracle:Oracle-Linux:ol94-lvm-gen2:latest",
          	"Oracle:Oracle-Linux:ol87-lvm:latest",
          	"Oracle:Oracle-Linux:ol91-lvm:latest",
          	"RedHat:RHEL:9_1:latest",
