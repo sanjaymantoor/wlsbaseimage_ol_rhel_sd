@@ -104,6 +104,7 @@
          "type":"string",
          "defaultValue":"7.6",
          "allowedValues":[
+            "9.4",
             "9.1",
             "8.10",
          	"8.7",
