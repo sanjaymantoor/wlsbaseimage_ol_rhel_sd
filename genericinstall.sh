@@ -478,11 +478,11 @@ function updateOLOS()
 	minorVersion=`echo $osVersion |cut -f2 -d"."`
 	echo "Kernel version before update:"
 	uname -a
-	echo yum upgrade -y --disablerepo=*  --enablerepo=ol${majorVersion}_UEKR7 
-	yum upgrade -y --disablerepo=*  --enablerepo=ol${majorVersion}_UEKR7
-	yum upgrade -y polkit
-	echo "Kernel version after update:"
-	uname -a
+	#echo yum upgrade -y --disablerepo=*  --enablerepo=ol${majorVersion}_UEKR7 
+	#yum upgrade -y --disablerepo=*  --enablerepo=ol${majorVersion}_UEKR7
+	#yum upgrade -y polkit
+	#echo "Kernel version after update:"
+	#uname -a
 }
 
 # Update th opatch utility as per opatchURL supplied
